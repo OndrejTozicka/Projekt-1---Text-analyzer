@@ -1,5 +1,5 @@
 '''
-author = 
+author = Ondřej Tožička
 '''
 TEXTS = ['''
 Situated about 10 miles west of Kemmerer, 
@@ -44,20 +44,24 @@ print("Welcome to the app. Please log in: ")
 #pokud nebude user ve slovníku, zeptám se jestli chce zopakovat
 pokracovat = False
 heslo = ""
+#definguji si funkci, která ověří dvojci ve slovníku user:heslo a vrací boolean
+def login(user,heslo):
+    pokracovat = False
+    if user in users.keys():
+        if heslo == users[user]:
+            print("Welcome to text analyzer")
+            pokracovat = True
+    return pokracovat
+
 while pokracovat == False:
     user = input("USERNAME: ").lower()
-    if user not in users.keys():
-        zopakovat = input("User not found in database. Do you want to try again? "
-                          "Input Y for Yes otherwise have a nice day a see you soon. ").lower()
-        if zopakovat == "y":
-            pokracovat = False
-        else:
-            break
-    else:
-        while heslo != users[user]:
-            heslo = input("PASSWORD: ")
-        pokracovat = True
+    heslo = input("PASSWORD: ")
+    pokracovat = login(user,heslo)
+    if not pokracovat:
+        if input("Wrong password or username, try again or press 'q' to quit: ").lower() == "q":
+            exit()
 #konec logovani
+
 print("-"*50)
 print("We have 3 texts to be analyzed.")
 
@@ -78,16 +82,16 @@ pocet_uppercase = 0
 pocet_lowercase = 0
 pocet_numeric = 0
 celkem = 0
-for kazde_slovo in text.split():
-    if not kazde_slovo.islower() and not kazde_slovo.isnumeric():
+for slovo in text.split():
+    if not slovo.islower() and not slovo.isnumeric():
         pocet_slov_velke_pismeno+=1
-    if kazde_slovo.isupper():
+    elif slovo.isupper():
         pocet_uppercase+=1
-    if kazde_slovo.islower():
+    elif slovo.islower():
         pocet_lowercase+=1
-    if kazde_slovo.isnumeric():
+    elif slovo.isnumeric():
         pocet_numeric+=1
-        celkem += float(kazde_slovo)
+        celkem += float(slovo)
 
 print("There are {} words in the selected text".format(pocet_slov))
 print("There are {} titlecase words in the selected text".format(pocet_slov_velke_pismeno))
@@ -117,3 +121,4 @@ print ("If we summed all the numbers in this text we would get: {}".format(celke
 
 #------
 print("-"*50)
+
